@@ -1,0 +1,17 @@
+version: '3.0'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+
+  runner:
+    container_name: runner
+    build:
+      context: ./runner
+      dockerfile: ./Dockerfile
+    depends_on: [app]
