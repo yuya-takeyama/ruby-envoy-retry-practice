@@ -2,6 +2,7 @@ require 'slack-ruby-client'
 require 'open-uri'
 
 Slack.configure do |config|
+  # This token is already revoked :-P
   config.token = 'xoxb-2869666478-509888571184-jVPnPOAcoM6xMmN9JvtFOnqG'
 end
 
