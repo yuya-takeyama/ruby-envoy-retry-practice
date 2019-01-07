@@ -1,11 +1,20 @@
 version: '3.0'
 
 services:
-  app:
-    container_name: app
-    build:
-      context: ./app
-      dockerfile: ./Dockerfile
+  front-proxy:
+    container_name: front-proxy
+    image: envoyproxy/envoy:latest
+    volumes:
+      - ./front-proxy/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - 10000:10000
+      - 9901:9901
+
+  slack-proxy:
+    container_name: slack-proxy
+    image: nginx:alpine
+    volumes:
+      - ./slack-proxy/slack-proxy.conf:/etc/nginx/conf.d/slack-proxy.conf
     ports:
       - 80:80
 
@@ -14,4 +23,6 @@ services:
     build:
       context: ./runner
       dockerfile: ./Dockerfile
-    depends_on: [app]
+    volumes:
+      - ./runner/app.rb:/app/app.rb
+    depends_on: [front-proxy, slack-proxy]

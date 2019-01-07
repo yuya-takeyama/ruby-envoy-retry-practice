@@ -1,13 +1,16 @@
+require 'slack-ruby-client'
 require 'open-uri'
 
-begin
-  10.times do
-    open('http://app')
-    puts "OK"
-  end
-rescue
-  puts "NG"
-  exit 1
+Slack.configure do |config|
+  config.token = 'xoxb-2869666478-509888571184-jVPnPOAcoM6xMmN9JvtFOnqG'
 end
 
-puts "Completed!"
+client = Slack::Web::Client.new(
+  endpoint: 'http://slack-proxy/api',
+  proxy: 'http://front-proxy:10000',
+)
+
+1.upto(10000) do |n|
+  client.channels_info(channel: '#general')
+  puts n
+end
